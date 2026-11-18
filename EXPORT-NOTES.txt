@@ -1,0 +1,43 @@
+SANITIZED LOCAL EXPORT — REVIEW STATUS
+
+These are examples exported from seven Hermes profiles. No DGX files were modified.
+Not yet a tested standalone installation. No secrets, chat logs, memories, research
+state, database files, caches, personal resumes or .env files are intended for inclusion.
+
+Layout: agents/<purpose> contains SOUL.md, config.example.yaml,
+profile.example.yaml, scheduling/jobs.example.json, and available scripts/tests.
+The AI-news files previously at the project root have been consolidated under
+agents/ai-news. The previously approved AI-news SOUL.md/config are retained.
+
+All schedule templates are disabled. They omit execution history and recipient IDs.
+Do not copy them over a live jobs database. Register jobs with the installed Hermes
+CLI, then resolve upstream job IDs and verify timezone behavior before enabling.
+
+Remaining setup work:
+- /home/USER and HOST_PLACEHOLDER paths are intentional placeholders.
+- Provider authentication is not included; current primary configurations use Codex.
+- Environment lines were removed from service templates. Recreate private runtime
+  environment settings and adjust executable paths before installing services.
+- Original Hermes profile names still appear in cross-profile references. The folder
+  names here are human-readable; use the profile mapping below during deployment.
+- YouTube jobs reference a private/generated 500-channel watchlist, transcript stores,
+  source rubric and other runtime artifacts, which are not included.
+- AI-news ledger and Todoist helpers may depend on installed Hermes modules.
+- PM report project includes source templates/tests/editorial policy, not generated
+  editions, assets, private knowledge maps or research state. More dependencies may
+  be required before its build/tests can run.
+- The orchestrator SOUL has conflicting older and newer routing policies and refers
+  to an optional worker profile not exported here. Reconcile before deployment.
+- PM profile description is an older role description; scheduled prompts describe
+  the actual PM-learning workflow.
+- Source behavior bugs identified in review have not been fixed in this export.
+- Validation checks parsing and sanitization, not runtime behavior or passing tests.
+
+Original profile -> folder:
+ai-researcher -> ai-news
+x-researcher-ai -> x-research
+youtube-ai-researcher -> youtube-research
+ai-trends-dashboard -> ai-trends-dashboard
+minimax-local -> job-search
+agent-orchestrator -> orchestrator
+product-management-reports -> product-management-reports

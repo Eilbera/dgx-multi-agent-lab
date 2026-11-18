@@ -1,0 +1,25 @@
+{
+  "example_only": true,
+  "note": "Disabled templates. Register with Hermes; resolve paths, context job IDs, credentials and recipients before enabling. Cron timezone must be verified on deployment.",
+  "jobs": [
+    {
+      "name": "Daily senior PM job search \u2014 8am PST",
+      "prompt": "Every day, search for newly posted and currently open senior Product Manager opportunities for the user. Target titles: Senior Product Manager, Staff Product Manager, Principal Product Manager, Group Product Manager, Lead Product Manager, and closely related senior product leadership roles; exclude project manager and program manager roles. Prioritize California's South Bay\u2014San Jose, Santa Clara, Sunnyvale, Mountain View, Cupertino, Palo Alto, Menlo Park, and Redwood City\u2014and nearby hybrid roles. Target compensation is approximately $200,000 or higher.\n\nRESUME REVIEW \u2014 REQUIRED ON EVERY RUN:\nBefore scoring or recommending any role, read the user's current master resume at:\n- Extracted text for reliable analysis: /home/USER/.hermes/profiles/minimax-local/documents/YOUR_RESUME.txt\n- Original PDF/source of truth: /home/USER/.hermes/profiles/minimax-local/documents/YOUR_RESUME.pdf\nDo not expose the user's phone number, email, street address, or other contact details in the report.\n\nFor every shortlisted role:\n1. Compare the verified job requirements with the user's actual background in the resume.\n2. Label resume fit as Strong, Moderate, or Weak and give a concise evidence-based reason.\n3. Identify the most important missing or under-emphasized requirements.\n4. If minor resume tailoring would improve the application, provide 1\u20133 specific suggested edits alongside the direct job-posting link. Suggestions should name the section or existing bullet to revise and propose concise replacement/additional wording.\n5. Suggest only claims supported by the resume. Never fabricate employers, titles, dates, metrics, tools, domain experience, or responsibilities.\n6. If the gap is fundamental rather than fixable through truthful tailoring, say so clearly and do not recommend cosmetic keyword stuffing.\n7. If no resume changes are needed, state: \u201cResume changes: None essential.\u201d\n\nUse this resilient source order:\n1. Discover candidates with web_search, configured to use the key-free DDGS backend.\n2. Verify every candidate against a first-party employer career page or employer-hosted ATS endpoint. Prefer public JSON endpoints from Greenhouse, Lever, Ashby, and other ATS systems. If web_extract fails, use read-only terminal HTTP requests (curl or Python urllib/requests) to retrieve the direct page or API response. Do not execute downloaded scripts, submit forms, authenticate, or modify anything.\n3. If direct HTTP cannot verify a JavaScript-heavy page, use browser_exec as a final fallback when available.\n4. If one provider fails, continue through the remaining source routes. Never allow a Tavily failure to abort the entire scan.\n\nPrioritize postings from the previous 24 hours and then the previous 7 days. Verify that each role appears open and that its direct application link resolves. Deduplicate reposts and avoid staffing agencies. Rank roles using both opportunity quality and resume fit. Deliver a concise shortlist with company, exact title, location/work model, posting date or recency signal, listed base salary range, direct application URL, fit assessment, key gap, and truthful resume-edit suggestions. Clearly distinguish genuinely new roles from older still-open roles and label missing or uncertain dates and compensation. If no roles can be verified after all fallback routes, report the specific route failures. Do not apply, contact anyone, send messages, submit forms, or perform external communications on the user's behalf.",
+      "no_agent": false,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 16 * * *",
+        "display": "0 16 * * *"
+      },
+      "deliver": "origin",
+      "enabled_toolsets": [
+        "web",
+        "browser-use",
+        "terminal",
+        "file"
+      ],
+      "skills": [],
+      "enabled": false
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "example_only": true,
+  "note": "Disabled templates. Register with Hermes; resolve paths, context job IDs, credentials and recipients before enabling. Cron timezone must be verified on deployment.",
+  "jobs": []
+}

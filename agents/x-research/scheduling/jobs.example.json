@@ -1,0 +1,46 @@
+{
+  "example_only": true,
+  "note": "Disabled templates. Register with Hermes; resolve paths, context job IDs, credentials and recipients before enabling. Cron timezone must be verified on deployment.",
+  "jobs": [
+    {
+      "name": "Daily AI X Brief",
+      "prompt": "Produce the user's Daily AI X Brief using the daily-ai-x-brief skill. Research first, verify primary sources, compare against recent successful briefs, and deliver only substantive new developments or clearly labeled updates. Apply the skill's seven-day-capped catch-up policy after missed or failed runs, precise evidence labels, bounded read-only retrieval retries, compact Telegram format, relevant research note, and final editorial gate. Report coverage limitations honestly; never treat provider/search failures as no news. Preserve the existing model/provider and schedule. The scheduled 08:00 UTC is the research start time, not a guaranteed delivery time. Do not change configuration, install software, manage cron jobs, or take social-account actions. Return the final brief for automatic delivery.",
+      "model": "gpt-6-astra",
+      "provider": "openai-codex",
+      "no_agent": false,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 8 * * *",
+        "display": "0 8 * * *"
+      },
+      "deliver": "origin",
+      "skills": [
+        "daily-ai-x-brief"
+      ],
+      "enabled": false,
+      "context_from": [
+        "self"
+      ]
+    },
+    {
+      "name": "Evening AI Major Updates",
+      "prompt": "Run daily-ai-x-brief in Evening high-threshold mode. Perform all mandatory coverage searches and compare with previous briefs and alerts. Include significant never-reported stories as labeled catch-up under the skill policy. Report major new developments and material updates with original X and primary-source links and precise evidence labels. Cover features, science, leadership, business, safety and disputes as well as models and research. Let the report grow when needed: no fixed item or word cap should hide important news. Return exactly [SILENT] only after adequate research finds nothing qualifying; disclose coverage failures. No configuration changes, installations, job management or social-account actions. Return the report for automatic delivery. 20:00 UTC is research start, not a delivery guarantee.",
+      "model": "gpt-6-astra",
+      "provider": "openai-codex",
+      "no_agent": false,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 20 * * *",
+        "display": "0 20 * * *"
+      },
+      "deliver": "telegram:the user",
+      "skills": [
+        "daily-ai-x-brief"
+      ],
+      "enabled": false,
+      "context_from": [
+        "self"
+      ]
+    }
+  ]
+}

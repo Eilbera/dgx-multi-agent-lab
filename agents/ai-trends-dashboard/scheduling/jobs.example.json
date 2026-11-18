@@ -1,0 +1,30 @@
+{
+  "example_only": true,
+  "note": "Disabled templates. Register with Hermes; resolve paths, context job IDs, credentials and recipients before enabling. Cron timezone must be verified on deployment.",
+  "jobs": [
+    {
+      "name": "Daily AI Trends Monitor \u2014 Noon Pacific",
+      "prompt": "Produce the user's daily AI Trends Dashboard update.\n\nAt the start of every run, dynamically enumerate Hermes profiles under /home/USER/.hermes/profiles. Inspect recent completed substantive research sessions from all relevant AI-research profiles, excluding ai-trends-dashboard itself, minimax-local and job-helper variants, economics/economic-trends variants, unfinished sessions, greetings, setup/health checks, source audits, and duplicate reruns.\n\nRead /home/USER/.hermes/profiles/ai-trends-dashboard/dashboard/latest.md and compare candidates against the current baseline. Deduplicate by underlying event. Include only material new developments, stronger evidence, meaningful corrections, or significant trend changes across frontier/open models, AI products and agents, companies/startups, funding and acquisitions, evaluations, chips/infrastructure, research, policy, adoption, and market shifts.\n\nVerify high-impact current claims live, preferring primary sources. Include publication dates and direct links. Label confirmed facts, company claims, third-party analysis, forecasts, and rumors. Explain why developments matter for product strategy, technology leadership, careers, investment, or competition.\n\nWhen material changes exist, update the full dashboard at /home/USER/.hermes/profiles/ai-trends-dashboard/dashboard/latest.md with: Executive Summary; Ranked Key Developments; Evidence and Sources; Cross-Profile Signals; Implications; Watchlist; Changes Since Previous Report; and Profile Coverage / Source Sessions / Coverage Gaps. Also create a UTC timestamped snapshot under /home/USER/.hermes/profiles/ai-trends-dashboard/dashboard/archive/YYYY-MM-DD_HH-MM.md. Verify both files, then deliver a concise alert with the material changes, confidence, sources, and report paths.\n\nWhen there is no material change, do not rewrite or archive the dashboard. Respond exactly [SILENT] so no repetitive all-clear message is delivered.",
+      "monitor_script": "pacific_noon_gate.py",
+      "no_agent": false,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 19,20 * * *",
+        "display": "0 19,20 * * *"
+      },
+      "deliver": "origin",
+      "enabled_toolsets": [
+        "web",
+        "file",
+        "terminal"
+      ],
+      "skills": [
+        "ai-trends-monitoring",
+        "grounded-citations",
+        "competitor-news-monitor",
+        "session-librarian"
+      ],
+      "enabled": false
+    }
+  ]
+}

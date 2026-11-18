@@ -1,0 +1,347 @@
+{
+  "example_only": true,
+  "note": "Disabled templates. Register with Hermes; resolve paths, context job IDs, credentials and recipients before enabling. Cron timezone must be verified on deployment.",
+  "jobs": [
+    {
+      "name": "Daily YouTube AI Intelligence Brief",
+      "prompt": "Produce the user's morning YouTube AI brief from the injected top-10 selection and completed transcript reviews. The selector metadata-screened the full 36-hour candidate set and chose exactly 10 distinct videos. Transcript retrieval and full reading apply only to those 10.\n\nHARD RULES\n1. Use only `selection.videos` and `completed_reviews`; never fetch or summarize non-selected transcripts.\n2. Require `videos_selected = 10`, `transcript_fetch_pending = 0`, `transcript_fetch_errors = 0`, and `full_transcript_reviews_pending = 0`. Scheduled events are outside scope until they begin.\n3. Every selected video with an available transcript needs a valid full-review artifact. If a selected transcript is unavailable, list that slot explicitly without fabricating a summary.\n4. Deduplicate by story_key and verify consequential claims against direct papers, repositories, model cards, benchmarks, documentation, or official announcements.\n5. Save the draft to `/tmp/youtube_daily_brief.md`. If 10 completed reviews exist, run `python3 /home/USER/.hermes/profiles/youtube-ai-researcher/scripts/youtube_brief_quality.py /tmp/youtube_daily_brief.md --min-words 180 --max-words 280 --required-reviews 10`. If fewer exist only because selected transcripts are unavailable, run the same command without `--required-reviews 10`. Revise until it passes. Never deliver a structurally failing draft.\n\nEXACT OUTPUT FORMAT\n- `**Bottom line**`: 2\u20133 concise sentences.\n- `**Deep reviews**`: numbered completed reviews. Each review must start `**N) Title**` and use separate lines with exactly these labels:\n  - `**Channel:**`\n  - `**Published:** YYYY-MM-DD HH:MM UTC`\n  - `**Video:**` valid YouTube URL\n  - `**Transcript coverage:** Complete transcript reviewed from START to END (N segments); no portions skipped.`\n  - `**Core argument:**` 25\u201345 words\n  - `**How it works / evidence:**` 45\u201375 words with meaningful timestamps\n  - `**Caveats / credibility:**` 20\u201340 words\n  - `**Why it matters:** Classification: New`, `Material update`, or `Recycled`, then implications\n  - `**Verification:** **Video says:** ... **Primary evidence:** ... **Assessment:** ...` with direct non-YouTube primary URL\n  - `**Verdict:**` one sentence and useful timestamp range\n  - Total: 180\u2013280 substantive words.\n- If a selected transcript is unavailable, add it under `**Worth knowing**` with Channel, Published, Video, and exact unavailable reason; do not count it as a numbered deep review.\n- `**Action radar**`: at most five bullets explicitly labeled Read/Test/Monitor/Ignore.\n- `**Noise filtered**`: one compact bullet explaining that non-selected videos were metadata-screened only.\n- `**Coverage**`: separate numeric bullet lines using exactly these labels: Configured channels; Live feed successes; Feed failures; Persisted candidates; Manual/web additions; Discovered; Screened; Full transcripts reviewed; Top stories presented; Transcript failures. Then list selected videos, unavailable/pending/error/scheduled counts, unhealthy channels, and blind spots.\n- `**Sources**`: mechanically grounded source list matching inline citations.\n\nAlways run the deterministic validator before delivery. Never imply every metadata candidate received transcript review. Funnel: monitor 500 channels \u2192 metadata-screen all 36-hour candidates \u2192 select 10 \u2192 fetch/read only those transcripts \u2192 deliver concise summaries.",
+      "script": "youtube_daily_review_context.py",
+      "no_agent": false,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 16 * * *",
+        "display": "0 16 * * *"
+      },
+      "deliver": "origin",
+      "enabled_toolsets": [
+        "web",
+        "terminal",
+        "file"
+      ],
+      "skills": [
+        "youtube-content",
+        "grounded-citations"
+      ],
+      "enabled": false,
+      "context_from": [
+        "UPSTREAM_JOB_ID",
+        "UPSTREAM_JOB_ID",
+        "UPSTREAM_JOB_ID"
+      ]
+    },
+    {
+      "name": "YouTube AI Feed Collector",
+      "prompt": "Silently ingest verified YouTube AI channel feeds into persistent SQLite state so the daily brief cannot miss high-volume feed entries.",
+      "script": "youtube_ai_collect_only.py",
+      "no_agent": true,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 */4 * * *",
+        "display": "0 */4 * * *"
+      },
+      "deliver": "local",
+      "skills": [],
+      "enabled": false
+    },
+    {
+      "name": "Weekly YouTube AI Source Audit",
+      "prompt": "Audit the user's ranked 500-channel YouTube AI watchlist. Read `/home/USER/.hermes/profiles/youtube-ai-researcher/research/youtube_top500_verified.json`, its rubric, candidate files, and the latest collector output. Do not assume the old embedded 46/47-channel seed is the active list.\n\nWorkflow:\n1. Validate that the ranked artifact contains exactly 500 unique canonical channel IDs, contiguous ranks, tiers, scores, categories, regions/languages, and live-feed verification metadata.\n2. Run `python3 /home/USER/.hermes/profiles/youtube-ai-researcher/scripts/youtube_ai_feeds.py --hours 168` and report configured channels, live successes, failures, unhealthy channels, upload activity, and candidate volume.\n3. Identify stale, off-topic, sensational, duplicate, renamed, or overly promotional sources. Pay particular attention to the bottom 100, channels with low recent AI-title density, and high-volume channels that create screening noise.\n4. Check priority blind spots outside the list: newly launched model labs, AI-safety/evaluation groups, official conference/event pages, open-source inference/training projects, emerging researchers, and credible non-English regional communities. Use bounded distinct searches and direct official-page/feed verification; never infer IDs from names or snippets.\n5. Recommend ranked additions and removals as one-for-one swaps. A proposed addition must include exact name, canonical channel URL/ID, feed URL, category/region, representative recent AI videos, and why it outranks the proposed removal.\n6. Do not modify the watchlist automatically. Return a concise audit with health, false-positive risks, blind spots, and proposed swaps. If discovery tooling is blocked, report the exact gap rather than claiming exhaustive coverage.\n\nThis report is stored locally and injected into subsequent daily briefs.",
+      "no_agent": false,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 14 * * 0",
+        "display": "0 14 * * 0"
+      },
+      "deliver": "local",
+      "enabled_toolsets": [
+        "web",
+        "file",
+        "terminal"
+      ],
+      "skills": [
+        "youtube-content"
+      ],
+      "enabled": false
+    },
+    {
+      "name": "Daily YouTube Brief QA",
+      "prompt": "Audit the most recent `Daily YouTube AI Intelligence Brief` supplied as upstream context. This is a semantic quality and accuracy review, not a rewrite for delivery.\n\nCheck every deep-reviewed video:\n1. Confirm the video URL, title, channel, and publication date are real and correctly attributed.\n2. Retrieve or inspect the timestamped transcript and spot-check every timestamp cited in the brief. Flag timestamps that do not support the adjacent claim, lie outside the video, or come from a different upload.\n3. Check whether the summary captures the video's central argument, mechanism, evidence, caveats, and practical implications rather than merely extracting isolated claims.\n4. Open every primary source used for verification. Identify claims that are unsupported, overstated, contradicted, or sourced only to vendor marketing.\n5. Check whether sponsorships, affiliate incentives, recycled material, weak demos, missing baselines, and sensational framing were handled appropriately.\n6. Verify that `Discovered`, `Screened`, `Full transcript-level reviews`, transcript failures, and feed failures are distinct and internally consistent.\n7. Assess whether the selected videos were genuinely the highest-value items in the available set, using the brief's coverage/noise sections and targeted web checks.\n\nOutput a compact QA report with:\n- `Pass/fail`\n- `Critical factual or citation problems`\n- `Timestamp spot-checks`\n- `Summary-depth problems`\n- `Selection or blind-spot problems`\n- `Concrete instruction for tomorrow's brief`\n\nDo not modify the collector, watchlist, cron jobs, or delivered brief. Do not invent transcript evidence. If the upstream brief is missing or malformed, report that as a failure. This report is stored locally and injected into the next daily run so the researcher can correct recurring weaknesses.",
+      "no_agent": false,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 17 * * *",
+        "display": "0 17 * * *"
+      },
+      "deliver": "local",
+      "enabled_toolsets": [
+        "web",
+        "terminal",
+        "file"
+      ],
+      "skills": [
+        "youtube-content",
+        "grounded-citations"
+      ],
+      "enabled": false,
+      "context_from": [
+        "UPSTREAM_JOB_ID"
+      ]
+    },
+    {
+      "name": "Weekly YouTube AI Trend Synthesis",
+      "prompt": "Create a longitudinal trend synthesis from the user's last seven daily YouTube AI intelligence briefs. Read the most recent seven completed response artifacts under `/home/USER/.hermes/profiles/youtube-ai-researcher/cron/output/UPSTREAM_JOB_ID/` and use the supplied source-audit and QA context. Analyze the delivered responses, not the embedded prompts or skill text.\n\nDeduplicate repeated stories and build a compact intelligence ledger containing:\n- `Emerging themes`: developments gaining credible momentum across multiple independent videos or primary sources.\n- `Material changes`: what became newly possible, better evidenced, contradicted, delayed, or less credible during the week.\n- `Claims to track`: consequential unresolved claims, with the speaker/source, current evidence status, and what future evidence would resolve them.\n- `Practical action radar`: specific tools, repositories, papers, methods, or policy changes the user should test, read, monitor, or ignore\u2014and why.\n- `Overhyped narratives`: repeated claims whose evidence remains weak, promotional, circular, or benchmark-dependent.\n- `Next-week watchlist`: 3\u20137 precise questions the daily researcher should actively investigate.\n\nPreserve links to the relevant videos and primary evidence. Separate repeated commentary from independent corroboration; five videos repeating one announcement count as one source chain, not five confirmations. Do not infer a trend from upload volume alone. Clearly mark conclusions supported only by vendor sources or a single speaker.\n\nThis report is stored locally and injected into subsequent daily briefs. It must help the daily agent identify whether today's upload is a genuinely new development, an update to an existing thread, or recycled coverage. Do not modify jobs, watchlists, or files other than the scheduler's own output.",
+      "no_agent": false,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 18 * * 0",
+        "display": "0 18 * * 0"
+      },
+      "deliver": "local",
+      "enabled_toolsets": [
+        "web",
+        "file",
+        "terminal"
+      ],
+      "skills": [
+        "grounded-citations"
+      ],
+      "enabled": false,
+      "context_from": [
+        "UPSTREAM_JOB_ID",
+        "UPSTREAM_JOB_ID"
+      ]
+    },
+    {
+      "name": "YouTube Full Transcript Ingest",
+      "prompt": "Fetch and persist every available full transcript for recent monitored videos.",
+      "script": "youtube_transcript_ingest.sh",
+      "no_agent": true,
+      "schedule": {
+        "kind": "cron",
+        "expr": "40 14 * * *",
+        "display": "40 14 * * *"
+      },
+      "deliver": "local",
+      "skills": [],
+      "enabled": false
+    },
+    {
+      "name": "YouTube Transcript Reviewer 0",
+      "prompt": "Process every video in the injected shard queue. Read each transcript_path from first line through final line using sequential read_file pages; never sample or skip. Write one valid JSON object to review_output_path using review_schema. For transcripts under 200 words, summary must be 25\u201380 words; otherwise 90\u2013140 words. Cover the complete thesis/evidence/conclusion, limitations, sponsorship/promotion, and novelty without padding. Use exact segment_count and word_count. If queued is 0, return exactly [SILENT]. Finish every queued item.",
+      "script": "youtube_review_queue_0.py",
+      "no_agent": false,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 15 * * *",
+        "display": "0 15 * * *"
+      },
+      "deliver": "local",
+      "enabled_toolsets": [
+        "file",
+        "terminal"
+      ],
+      "skills": [
+        "youtube-content"
+      ],
+      "enabled": false
+    },
+    {
+      "name": "YouTube Transcript Reviewer 1",
+      "prompt": "Process every video in the injected shard queue. Read each transcript_path from first line through final line using sequential read_file pages; never sample or skip. Write one valid JSON object to review_output_path using review_schema. For transcripts under 200 words, summary must be 25\u201380 words; otherwise 90\u2013140 words. Cover the complete thesis/evidence/conclusion, limitations, sponsorship/promotion, and novelty without padding. Use exact segment_count and word_count. If queued is 0, return exactly [SILENT]. Finish every queued item.",
+      "script": "youtube_review_queue_1.py",
+      "no_agent": false,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 15 * * *",
+        "display": "0 15 * * *"
+      },
+      "deliver": "local",
+      "enabled_toolsets": [
+        "file",
+        "terminal"
+      ],
+      "skills": [
+        "youtube-content"
+      ],
+      "enabled": false
+    },
+    {
+      "name": "YouTube Transcript Reviewer 2",
+      "prompt": "Process every video in the injected shard queue. Read each transcript_path from first line through final line using sequential read_file pages; never sample or skip. Write one valid JSON object to review_output_path using review_schema. For transcripts under 200 words, summary must be 25\u201380 words; otherwise 90\u2013140 words. Cover the complete thesis/evidence/conclusion, limitations, sponsorship/promotion, and novelty without padding. Use exact segment_count and word_count. If queued is 0, return exactly [SILENT]. Finish every queued item.",
+      "script": "youtube_review_queue_2.py",
+      "no_agent": false,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 15 * * *",
+        "display": "0 15 * * *"
+      },
+      "deliver": "local",
+      "enabled_toolsets": [
+        "file",
+        "terminal"
+      ],
+      "skills": [
+        "youtube-content"
+      ],
+      "enabled": false
+    },
+    {
+      "name": "YouTube Transcript Reviewer 3",
+      "prompt": "Process every video in the injected shard queue. Read each transcript_path from first line through final line using sequential read_file pages; never sample or skip. Write one valid JSON object to review_output_path using review_schema. For transcripts under 200 words, summary must be 25\u201380 words; otherwise 90\u2013140 words. Cover the complete thesis/evidence/conclusion, limitations, sponsorship/promotion, and novelty without padding. Use exact segment_count and word_count. If queued is 0, return exactly [SILENT]. Finish every queued item.",
+      "script": "youtube_review_queue_3.py",
+      "no_agent": false,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 15 * * *",
+        "display": "0 15 * * *"
+      },
+      "deliver": "local",
+      "enabled_toolsets": [
+        "file",
+        "terminal"
+      ],
+      "skills": [
+        "youtube-content"
+      ],
+      "enabled": false
+    },
+    {
+      "name": "YouTube Transcript Reviewer 4",
+      "prompt": "Process every video in the injected shard queue. Read each transcript_path from first line through final line using sequential read_file pages; never sample or skip. Write one valid JSON object to review_output_path using review_schema. For transcripts under 200 words, summary must be 25\u201380 words; otherwise 90\u2013140 words. Cover the complete thesis/evidence/conclusion, limitations, sponsorship/promotion, and novelty without padding. Use exact segment_count and word_count. If queued is 0, return exactly [SILENT]. Finish every queued item.",
+      "script": "youtube_review_queue_4.py",
+      "no_agent": false,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 15 * * *",
+        "display": "0 15 * * *"
+      },
+      "deliver": "local",
+      "enabled_toolsets": [
+        "file",
+        "terminal"
+      ],
+      "skills": [
+        "youtube-content"
+      ],
+      "enabled": false
+    },
+    {
+      "name": "YouTube Transcript Reviewer 5",
+      "prompt": "Process every video in the injected shard queue. Read each transcript_path from first line through final line using sequential read_file pages; never sample or skip. Write one valid JSON object to review_output_path using review_schema. For transcripts under 200 words, summary must be 25\u201380 words; otherwise 90\u2013140 words. Cover the complete thesis/evidence/conclusion, limitations, sponsorship/promotion, and novelty without padding. Use exact segment_count and word_count. If queued is 0, return exactly [SILENT]. Finish every queued item.",
+      "script": "youtube_review_queue_5.py",
+      "no_agent": false,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 15 * * *",
+        "display": "0 15 * * *"
+      },
+      "deliver": "local",
+      "enabled_toolsets": [
+        "file",
+        "terminal"
+      ],
+      "skills": [
+        "youtube-content"
+      ],
+      "enabled": false
+    },
+    {
+      "name": "YouTube Transcript Reviewer 6",
+      "prompt": "Process every video in the injected shard queue. Read each transcript_path from first line through final line using sequential read_file pages; never sample or skip. Write one valid JSON object to review_output_path using review_schema. For transcripts under 200 words, summary must be 25\u201380 words; otherwise 90\u2013140 words. Cover the complete thesis/evidence/conclusion, limitations, sponsorship/promotion, and novelty without padding. Use exact segment_count and word_count. If queued is 0, return exactly [SILENT]. Finish every queued item.",
+      "script": "youtube_review_queue_6.py",
+      "no_agent": false,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 15 * * *",
+        "display": "0 15 * * *"
+      },
+      "deliver": "local",
+      "enabled_toolsets": [
+        "file",
+        "terminal"
+      ],
+      "skills": [
+        "youtube-content"
+      ],
+      "enabled": false
+    },
+    {
+      "name": "YouTube Transcript Reviewer 7",
+      "prompt": "Process every video in the injected shard queue. Read each transcript_path from first line through final line using sequential read_file pages; never sample or skip. Write one valid JSON object to review_output_path using review_schema. For transcripts under 200 words, summary must be 25\u201380 words; otherwise 90\u2013140 words. Cover the complete thesis/evidence/conclusion, limitations, sponsorship/promotion, and novelty without padding. Use exact segment_count and word_count. If queued is 0, return exactly [SILENT]. Finish every queued item.",
+      "script": "youtube_review_queue_7.py",
+      "no_agent": false,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 15 * * *",
+        "display": "0 15 * * *"
+      },
+      "deliver": "local",
+      "enabled_toolsets": [
+        "file",
+        "terminal"
+      ],
+      "skills": [
+        "youtube-content"
+      ],
+      "enabled": false
+    },
+    {
+      "name": "YouTube Transcript Reviewer 8",
+      "prompt": "Process every video in the injected shard queue. Read each transcript_path from first line through final line using sequential read_file pages; never sample or skip. Write one valid JSON object to review_output_path using review_schema. For transcripts under 200 words, summary must be 25\u201380 words; otherwise 90\u2013140 words. Cover the complete thesis/evidence/conclusion, limitations, sponsorship/promotion, and novelty without padding. Use exact segment_count and word_count. If queued is 0, return exactly [SILENT]. Finish every queued item.",
+      "script": "youtube_review_queue_8.py",
+      "no_agent": false,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 15 * * *",
+        "display": "0 15 * * *"
+      },
+      "deliver": "local",
+      "enabled_toolsets": [
+        "file",
+        "terminal"
+      ],
+      "skills": [
+        "youtube-content"
+      ],
+      "enabled": false
+    },
+    {
+      "name": "YouTube Transcript Reviewer 9",
+      "prompt": "Process every video in the injected shard queue. Read each transcript_path from first line through final line using sequential read_file pages; never sample or skip. Write one valid JSON object to review_output_path using review_schema. For transcripts under 200 words, summary must be 25\u201380 words; otherwise 90\u2013140 words. Cover the complete thesis/evidence/conclusion, limitations, sponsorship/promotion, and novelty without padding. Use exact segment_count and word_count. If queued is 0, return exactly [SILENT]. Finish every queued item.",
+      "script": "youtube_review_queue_9.py",
+      "no_agent": false,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 15 * * *",
+        "display": "0 15 * * *"
+      },
+      "deliver": "local",
+      "enabled_toolsets": [
+        "file",
+        "terminal"
+      ],
+      "skills": [
+        "youtube-content"
+      ],
+      "enabled": false
+    },
+    {
+      "name": "Daily YouTube Top-10 Selector",
+      "prompt": "Select exactly 10 distinct videos from the injected 36-hour collector JSON using metadata only. Do not fetch transcripts at this stage. Rank by consequential AI importance, novelty signals, primary-source authority, source tier/score/rank, technical specificity, and likely evidence density. Deduplicate videos about the same underlying story; prefer the canonical primary or complete source over clips, Shorts, reactions, tutorials, or commentary. Exclude scheduled events that have not started and obvious off-topic uploads.\n\nWrite `/home/USER/.hermes/profiles/youtube-ai-researcher/state/daily_selection/current.json` as valid JSON with: `selected_at`, `window_hours` (36), `candidate_count`, and `videos` containing exactly 10 objects copied from collector metadata plus `selection_rank` 1\u201310, `story_key`, and a one-sentence `selection_reason`. Overwrite the file atomically. Then return a compact local audit listing the 10 selections and candidate count. Never claim transcript review during selection.",
+      "script": "youtube_ai_feeds.py",
+      "no_agent": false,
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 14 * * *",
+        "display": "30 14 * * *"
+      },
+      "deliver": "local",
+      "enabled_toolsets": [
+        "file",
+        "terminal"
+      ],
+      "skills": [],
+      "enabled": false
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "example_only": true,
+  "note": "Disabled templates. Register with Hermes; resolve paths, context job IDs, credentials and recipients before enabling. Cron timezone must be verified on deployment.",
+  "jobs": [
+    {
+      "name": "Daily PM Learning Research",
+      "prompt": "Research senior-PM learning daily in /home/USER/pm-intelligence. Read EDITORIAL.md, recent content, private/knowledge-map.json and private/candidate-backlog.json first. Follow the learning contract rather than the legacy vendor-news format. Cover real PM practices, recent books, enduring foundations across strategy, discovery, prioritization, experimentation, growth, pricing, leadership and AI. Company context is optional, never a blocker for broad learning. Collect original practitioner cases, original research and author/publisher material. X is a discovery lead only when accessible; verify underlying sources. State access gaps. Never invent adoption, outcomes, dates, quotations or book access. Limit failing search retries; use direct sources/RSS alternatives. Verify novelty against prior art; distinguish documented practice, self-report, proposal and editorial synthesis. No minimum vendor developments and no forced frontier news. Keep a dated private candidate backlog with direct sources, inspected evidence, learning objective, limitations and dedupe history. Never overwrite unrelated private state. Daily collection is local, not daily publication. On Mondays produce a complete weekly learning research package from accumulated candidates: one substantial practice lesson with context, method, concrete worked example, decision/artifact and limits; a foundation refresher taught through a decision; a substantive recent-book assessment roughly fortnightly with thesis, explained ideas, critique, verdict and explicit access basis. Books and foundations may coexist. Label hypothetical examples. Optional frontier radar only when evidence merits it. No filler to meet counts; weak news must not suppress durable learning. Short concrete sentences, no repeated conclusion under multiple labels. Save actual usable package and candidate evidence under private/ and return exact paths plus concise status. On non-Mondays return collection status and paths, not a public edition. Research failures must be explicit, not SILENT. Do not publish, commit private data, or claim personal relevance without context.",
+      "model": "gpt-6-astra",
+      "provider": "openai-codex",
+      "no_agent": false,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 15 * * *",
+        "display": "0 15 * * *"
+      },
+      "deliver": "local",
+      "enabled_toolsets": [
+        "web",
+        "terminal",
+        "file"
+      ],
+      "skills": [
+        "product-management-intelligence",
+        "grounded-citations",
+        "humanizer"
+      ],
+      "workdir": "/home/USER/pm-intelligence",
+      "enabled": false,
+      "context_from": [
+        "self"
+      ]
+    },
+    {
+      "name": "Publish Weekly PM Learning Edition",
+      "prompt": "Publish a weekly senior-PM learning edition from /home/USER/pm-intelligence. Read EDITORIAL.md, README.md, scripts/build.py, scripts/editorial_gates.py, the latest learning edition/schema, tests, and private candidate/knowledge state. Upstream research job UPSTREAM_JOB_ID supplies paths and status; read actual saved package, not just injected transcript. Verify package date and completeness; never republish stale research as current. If package missing or research blocked, deliver explicit failure/skip status without inventing content. Use new backward-compatible learning schema and template, not legacy weekly_dossier quotas. Required emphasis: one real practice taught through evidence, method and worked decision/artifact, plus foundational learning. Include substantive recent-book assessment roughly fortnightly; books and foundations can coexist, explain coverage gaps. No vendor-news minimum; frontier optional. Distinguish sourced facts, practitioner self-reports, editorial analysis and labeled hypothetical examples. State book access limits and reasoned reading verdict. Short clear sentences, plain headings, no repeated advice. Read final prose critically; automated sentence length does not prove usefulness. Preserve historical editions. Use media only when it teaches. Never stage or publish private/. Run project virtualenv full tests, build, HTML/source/assets checks and privacy checks. Commit intended public files only, push without force, read exact live edition URL and confirm title/date/body before claiming publication. Update private learning coverage locally after success. Final Telegram response: verified report link, concrete learning outcomes for practice/book/foundation, one optional exercise, honest access/evidence caveats where material. No score questionnaire or generic news recap. If publication fails name exact step; distinguish generation, publishing and delivery. All schedules fixed UTC; do not claim DST-aware timing.",
+      "model": "gpt-6-astra",
+      "provider": "openai-codex",
+      "no_agent": false,
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 15 * * 1",
+        "display": "30 15 * * 1"
+      },
+      "deliver": "telegram:the user",
+      "enabled_toolsets": [
+        "web",
+        "terminal",
+        "file"
+      ],
+      "skills": [
+        "product-management-intelligence",
+        "grounded-citations",
+        "humanizer"
+      ],
+      "workdir": "/home/USER/pm-intelligence",
+      "enabled": false,
+      "context_from": [
+        "UPSTREAM_JOB_ID"
+      ]
+    }
+  ]
+}

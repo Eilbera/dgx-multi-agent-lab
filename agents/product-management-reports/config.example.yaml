@@ -1,0 +1,15 @@
+{
+  "model": {
+    "default": "gpt-6-astra",
+    "provider": "openai-codex"
+  },
+  "messaging": {
+    "telegram": {
+      "enabled": true,
+      "allowed_users": [
+        "YOUR_TELEGRAM_USER_ID"
+      ]
+    }
+  },
+  "TELEGRAM_HOME_CHANNEL": "YOUR_TELEGRAM_CHAT_ID"
+}

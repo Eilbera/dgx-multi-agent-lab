@@ -1,0 +1,20 @@
+{
+  "model": {
+    "default": "gpt-5.6-sol",
+    "provider": "openai-codex",
+    "context_length": 98304,
+    "max_tokens": 5000
+  },
+  "plugins": {
+    "enabled": []
+  },
+  "_config_version": 37,
+  "agent": {},
+  "terminal": {
+    "cwd": "/home/USER"
+  },
+  "quick_commands": {
+    "dashboard": "Inspect recent substantive completed outputs from Hermes profiles ai-researcher, x-researcher-ai, youtube-ai-researcher, and economics using session_search with the profile parameter. Ignore greetings, setup tests, health checks, and duplicate runs. Synthesize rather than concatenate: cluster duplicate stories, identify corroborated signals, note disagreement and uncertainty, distinguish new changes from recurring commentary, and rank trends by evidence, velocity, and impact. Produce an AI Trends Dashboard with Executive Summary, Ranked Trends, Cross-Bot Signals, Implications, Watchlist, and Source Sessions. Cite profile names and session links. Never claim to have reviewed a profile unless its sessions were actually inspected."
+  },
+  "timezone": ""
+}

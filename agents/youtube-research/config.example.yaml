@@ -1,0 +1,64 @@
+{
+  "model": {
+    "default": "gpt-5.6-sol",
+    "provider": "openai-codex",
+    "context_length": 98304,
+    "max_tokens": 5000
+  },
+  "fallback_providers": [],
+  "toolsets": [
+    "hermes-cli"
+  ],
+  "platform_toolsets": {
+    "cli": [
+      "hermes-cli"
+    ],
+    "telegram": [
+      "hermes-telegram"
+    ]
+  },
+  "agent": {
+    "max_turns": 90,
+    "gateway_timeout": 1800,
+    "restart_drain_timeout": 60,
+    "tool_use_enforcement": "auto",
+    "gateway_timeout_warning": 900,
+    "gateway_notify_interval": 600
+  },
+  "terminal": {
+    "backend": "local",
+    "cwd": ".",
+    "timeout": 180,
+    "persistent_shell": true
+  },
+  "checkpoints": {
+    "enabled": true,
+    "max_snapshots": 50
+  },
+  "compression": {
+    "enabled": true,
+    "threshold": 0.5,
+    "target_ratio": 0.2,
+    "protect_last_n": 20
+  },
+  "smart_model_routing": {
+    "enabled": false
+  },
+  "memory": {
+    "memory_enabled": true,
+    "user_profile_enabled": true
+  },
+  "messaging": {
+    "telegram": {
+      "enabled": true,
+      "allowed_users": [
+        "YOUR_TELEGRAM_USER_ID"
+      ]
+    }
+  },
+  "TELEGRAM_HOME_CHANNEL": "YOUR_TELEGRAM_CHAT_ID",
+  "plugins": {
+    "enabled": []
+  },
+  "_config_version": 37
+}
