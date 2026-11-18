@@ -1,6 +1,6 @@
 # Self-Hosted AI Research & Automation on NVIDIA DGX Spark
 
-A personal AI research system built on NVIDIA DGX Spark using Hermes, specialized agents, and Telegram interfaces.
+A AI research system built on NVIDIA DGX Spark using Hermes, specialized agents, and Telegram interfaces.
 
 I designed this system to solve a recurring problem: **keeping up with AI developments across news, research, X, and YouTube without spending hours collecting, filtering, and reading overlapping information.**
 
