@@ -20,19 +20,17 @@ First, I know it is a struggle to keep up with AI news. Even people in the field
 - Does it warrant an interruption, a daily summary, or deeper reading?
   
 
-This project explores those questions through a working deployment, with explicit editorial instructions, deterministic collection scripts, persistent state, and automated delivery.
-
 ## Agents
 
 | Agent | Responsibility |
 |---|---|
-| **AI News** | Collects developments, produces daily intelligence reports, and monitors for major updates. |
-| **X Research** | Discovers emerging AI discussions and verifies consequential claims against primary sources. |
-| **YouTube Research** | Selects videos, retrieves transcripts, produces structured reviews, and checks brief quality. |
-| **AI Trends Dashboard** | Synthesizes completed research across profiles into trends, implications, and watchlists. |
+| **AI News** | Collects news, model releases, benchmark updates into daily Telegram digest and full report with separate major news alert and Todoist reading tasks. |
+| **X Research** | Looks into significant AI discussions on X, checks original claims against supporting evidence, and delivers briefs. |
+| **YouTube Research** | Monitors 500 channels, selects 10 recent videos for transcript based review, and delivers timestamped summaries with evidence checks, caveats, and takeaways. |
+| **AI Trends Dashboard** | Reads the other research bots' completed work, merges overlapping stories, and updates a persistent dashboard when meaningful trends or evidence changes. |
 | **Job Search** | Finds senior product roles, verifies openings, and evaluates fit against a privately supplied resume. |
-| **Product Management Reports** | Develops evidence-backed learning material and supports a weekly publication workflow. |
-| **Orchestrator** | Coordinates specialist work through task assignment, dependencies, result review, and synthesis. |
+| **Product Management Reports** | Finds PM practices, foundations, and books throughout the week, then produces weekly leaning edition with examples and sources. |
+
 
 Agents can operate independently. Cross-profile synthesis and orchestration connect them where a task benefits from multiple specialties.
 
