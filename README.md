@@ -6,7 +6,7 @@ AI personal research system built on NVIDIA DGX Spark using Hermes mainly, with 
 
 I built this system to keep up with AI without checking every source individually:  **AI development moves fast across X, YouTube, research papers, frontier lab posts, and independent blogs.** This allowed me to stop spending hours looking for this information and dig into whatever interested me. 
 
-The system separates the collection, research, synthesis, and delivery into different workflows. It supports scheduled briefs, selective alerts, cross-agent trend synthesis.
+The system separates the collection, research, synthesis, and delivery into different workflows. It supports scheduled briefs, selective alerts, and cross-agent trend synthesis.
 
 I also built an additional agent to help with keeping up with the latest product management trends and news. This agent aggregates information such as book recommendations, new concepts, and trends across product management. I also built a job-search agent that recommends roles based on the specific things I am looking for. 
 
