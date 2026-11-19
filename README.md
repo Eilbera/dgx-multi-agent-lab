@@ -1,17 +1,19 @@
 # Self-Hosted AI Research & Automation on NVIDIA DGX Spark
 
+Six agents on my DGX Spark that research AI and PM news, verify claims, and deliver briefs via Telegram.
+
 AI personal research system built on NVIDIA DGX Spark using Hermes mainly, with Telegram as the interface. I also experimented with OpenClaw.
 
-I built this system to keep up with AI without checking every source individually:  **AI development moves fast across X, YouTube, research papers, frontier lab posts, and independence blogs.** this allowed for me to stop spending hours looking for this information and dig into whatever interested me. 
+I built this system to keep up with AI without checking every source individually:  **AI development moves fast across X, YouTube, research papers, frontier lab posts, and independent blogs.** This allowed me to stop spending hours looking for this information and dig into whatever interested me. 
 
 The system separates the collection, research, synthesis, and delivery into different workflows. It supports scheduled briefs, selective alerts, cross-agent trend synthesis.
 
-Second, I built an additional agent to help with keeping up with the latest product management trends and news. This agent aggregates information such as book recommendation, new concepts, and trends across product management. I also built a job-search agent that recommends roles based on the specific things I am looking for. 
+I also built an additional agent to help with keeping up with the latest product management trends and news. This agent aggregates information such as book recommendations, new concepts, and trends across product management. I also built a job-search agent that recommends roles based on the specific things I am looking for. 
 
 
 ## Why I built it
 
-First, I know it is a struggle to keep up with AI news. Even people in the field have to be vigilant about looking through multiple forms of media to figure out what is going on. I wanted a system that helped me understand:
+I know it is a struggle to keep up with AI news. Even people in the field have to be vigilant about looking through multiple forms of media to figure out what is going on. I wanted a system that helped me understand:
 
 - What is going on?
 - What actually changed?
@@ -29,7 +31,7 @@ First, I know it is a struggle to keep up with AI news. Even people in the field
 | **YouTube Research** | Monitors 500 channels, selects 10 recent videos for transcript based review, and delivers timestamped summaries with evidence checks, caveats, and takeaways. |
 | **AI Trends Dashboard** | Reads the other research bots' completed work, merges overlapping stories, and updates a persistent dashboard when meaningful trends or evidence changes. |
 | **Job Search** | Finds senior product roles, verifies openings, and evaluates fit against a privately supplied resume. |
-| **Product Management Reports** | Finds PM practices, foundations, and books throughout the week, then produces weekly leaning edition with examples and sources. |
+| **Product Management Reports** | Finds PM practices, foundations, and books throughout the week, then produces weekly learning edition with examples and sources. |
 
 ## Architecture
 
@@ -72,7 +74,7 @@ Self-hosting the agents does not mean every inference request stays on-device. P
 
 ## What I built
 
-I used Hermes to build and run these agents on my DGX Spark, I chose what each agent should cover, which sources to use, how to check the information, and when to send me updates through telegram. 
+I used Hermes to build and run these agents on my DGX Spark, I chose what each agent should cover, which sources to use, how to check the information, and when to send me updates through Telegram. 
 
 I used AI-assisted coding to develop and adapt the scripts for collecting information, reviewing transcripts, checking outputs, and delivering reports. I also configured the models and schedules and worked through issues like repeated news, missed updates, and model usage limits.
 
