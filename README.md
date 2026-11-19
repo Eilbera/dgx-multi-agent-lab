@@ -8,7 +8,7 @@ I built this system to keep up with AI without checking every source individuall
 
 The system separates the collection, research, synthesis, and delivery into different workflows. It supports scheduled briefs, selective alerts, and cross-agent trend synthesis.
 
-I also built an additional agent to help with keeping up with the latest product management trends and news. This agent aggregates information such as book recommendations, new concepts, and trends across product management. I also built a job-search agent that recommends roles based on the specific things I am looking for. 
+I also built an agent to help with keeping up with the latest product management trends and news. This agent aggregates information such as book recommendations, new concepts, and trends across product management. I also built a job-search agent that recommends roles based on the specific things I am looking for. 
 
 
 ## Why I built it
@@ -74,7 +74,7 @@ Self-hosting the agents does not mean every inference request stays on-device. P
 
 ## What I built
 
-I used Hermes to build and run these agents on my DGX Spark, I chose what each agent should cover, which sources to use, how to check the information, and when to send me updates through Telegram. 
+I used Hermes to build and run these agents on my DGX Spark. I chose what each agent should cover, which sources to use, how to check the information, and when to send me updates through Telegram. 
 
 I used AI-assisted coding to develop and adapt the scripts for collecting information, reviewing transcripts, checking outputs, and delivering reports. I also configured the models and schedules and worked through issues like repeated news, missed updates, and model usage limits.
 
