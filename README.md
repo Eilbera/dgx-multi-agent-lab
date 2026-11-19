@@ -31,31 +31,40 @@ First, I know it is a struggle to keep up with AI news. Even people in the field
 | **Job Search** | Finds senior product roles, verifies openings, and evaluates fit against a privately supplied resume. |
 | **Product Management Reports** | Finds PM practices, foundations, and books throughout the week, then produces weekly leaning edition with examples and sources. |
 
-
 ## Architecture
 
 ```mermaid
-flowchart TD
-    Sources["Public sources<br/>News · Papers · X · YouTube · Benchmarks"]
-    Collection["Collection scripts<br/>Parsing · Filtering · Caching · Coverage status"]
-    Research["Specialist Hermes agents<br/>Verification · Analysis · Synthesis"]
-    Quality["Workflow-specific checks<br/>Deduplication · Output validation · Delivery records"]
-    Delivery["Delivery<br/>Telegram briefs · Report attachments · Todoist"]
-    Trends["AI Trends Dashboard"]
-    Orchestrator["Orchestrator<br/>Assign · Coordinate · Review"]
+flowchart LR
+    News["News, papers and lab updates"] --> AI["AI News"]
+    AI --> Daily["Daily digest + full report"]
+    AI --> Alerts["Major-news alerts"]
 
-    Sources --> Collection
-    Collection --> Research
-    Orchestrator --> Research
-    Research --> Quality
-    Quality --> Delivery
-    Research --> Trends
+    X["X"] --> XR["X Research"]
+    YouTube["YouTube"] --> YR["YouTube Research"]
+
+    AI --> Trends["AI Trends Dashboard"]
+    XR --> Trends
+    YR --> Trends
+
+    Jobs["Job listings + resume"] --> JobAgent["Job Search"]
+    PM["PM research + books"] --> PMAgent["PM Learning Reports"]
+
+    Daily --> Telegram["Telegram"]
+    Alerts --> Telegram
+    XR --> Telegram
+    YR --> Telegram
+    Trends --> Telegram
+    JobAgent --> Telegram
+    PMAgent --> Telegram
 ```
+
+Agents run independently through Hermes on the DGX. The dashboard synthesizes their completed AI research. AI News and X also maintain Todoist reading lists.
+
 
 **Hosting:** NVIDIA DGX Spark  
 **Agent framework:** Hermes  
 **Interface:** Telegram  
-**Inference:** local-model infrastructure and cloud providers; the exported primary agent configurations currently use cloud Codex  
+**Inference:** Local models include MiniMax-M2.7 (UD-IQ4_XS via llama.cpp), Qwen3 30B-A3B, and Qwen3.5 27B (Q4_K_M and Q8_0 via Ollama). The exported primary agent configurations currently use cloud Codex.
 **Automation:** Hermes scheduled jobs and Linux services
 
 Self-hosting the agents does not mean every inference request stays on-device. Provider choice determines where model processing occurs.
