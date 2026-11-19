@@ -32,8 +32,6 @@ First, I know it is a struggle to keep up with AI news. Even people in the field
 | **Product Management Reports** | Finds PM practices, foundations, and books throughout the week, then produces weekly leaning edition with examples and sources. |
 
 
-Agents can operate independently. Cross-profile synthesis and orchestration connect them where a task benefits from multiple specialties.
-
 ## Architecture
 
 ```mermaid
