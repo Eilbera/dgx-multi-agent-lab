@@ -1,10 +1,13 @@
 # Self-Hosted AI Research & Automation on NVIDIA DGX Spark
 
-AI research system built on NVIDIA DGX Spark using Hermes, specialized agents, and Telegram interfaces.
+AI personal research system built on NVIDIA DGX Spark using Hermes mainly, with Telegram as the interface. I also experimented with OpenClaw.
 
-I designed this system to solve a recurring problem: **keeping up with AI developments across news, research, X, and YouTube without spending hours collecting, filtering, and reading overlapping information.**
+I built this system to keep up with AI without checking every source individually:  **AI development moves fast across X, YouTube, research papers, frontier lab posts, and independence blogs.** this allowed for me to stop spending hours looking for this information and dig into whatever interested me. 
 
-The system separates source collection, research, synthesis, and delivery into specialized workflows. It supports scheduled briefs, selective alerts, cross-agent trend synthesis, job discovery, and product-management learning.
+The system separates the collection, research, synthesis, and delivery into different workflows. It supports scheduled briefs, selective alerts, cross-agent trend synthesis.
+
+Second, I built an additional agent to help with keeping up with the latest product management trends and news. This agent aggregates information such as book recommendation, new concepts, and trends across product management. I also built a job-search agent that recommends roles based on the specific things I am looking for. 
+
 
 ## Why I built it
 
