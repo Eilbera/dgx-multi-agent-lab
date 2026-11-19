@@ -69,71 +69,13 @@ Agents run independently through Hermes on the DGX. The dashboard synthesizes th
 
 Self-hosting the agents does not mean every inference request stays on-device. Provider choice determines where model processing occurs.
 
-## Featured workflow: AI intelligence
 
-The AI-news workflow reflects six product decisions:
+## What I built
 
-1. **Collect broadly.** Monitor selected publications, research feeds, model releases, and benchmark sources.
-2. **Select deliberately.** Treat collected items as candidates, not mandatory report content.
-3. **Explain consequences.** Report what happened, why it matters, and the supporting evidence.
-4. **Offer two reading depths.** Deliver a concise Telegram digest alongside a full report.
-5. **Support follow-through.** Transfer substantive stories into Todoist while preserving existing task state.
-6. **Interrupt selectively.** Run a separate live monitor that alerts only on consequential developments.
+I used Hermes to build and run these agents on my DGX Spark, I chose what each agent should cover, which sources to use, how to check the information, and when to send me updates through telegram. 
 
-The comprehensive collector combines a base news collector with 28 additional configured sources. It emits structured evidence and coverage information for the synthesis stage.
+I used AI-assisted coding to develop and adapt the scripts for collecting information, reviewing transcripts, checking outputs, and delivering reports. I also configured the models and schedules and worked through issues like repeated news, missed updates, and model usage limits.
 
-The live monitor distinguishes between a story being collected, reviewed, included in a report, and actually delivered as an alert. Those are separate events.
-
-## Featured workflow: YouTube research
-
-The configured YouTube workflow uses a staged funnel:
-
-```text
-Channel watchlist
-    ↓
-Collect and screen recent video metadata
-    ↓
-Select a focused set of videos
-    ↓
-Retrieve selected transcripts
-    ↓
-Produce structured reviews and verify key claims
-    ↓
-Validate the brief before delivery
-```
-
-This separates inexpensive discovery from deeper review. The instructions require explicit reporting when transcripts are unavailable and prohibit claiming full review of videos screened only through metadata.
-
-The deployment references a generated 500-channel watchlist. That watchlist and its runtime research artifacts are not included in this sanitized export.
-
-## Reliability and quality controls
-
-Different workflows implement different controls:
-
-- **Bounded collection:** request timeouts, response-size limits, concurrency limits, and an overall deadline.
-- **Source transparency:** explicit fresh, cached, failed, and link-only coverage states.
-- **Persistent comparisons:** snapshots for tracking new entries and changes.
-- **Evidence standards:** primary-source verification and separation of facts, source claims, and analysis.
-- **Delivery accountability:** records that distinguish intended output from confirmed delivery.
-- **Deterministic checks:** validation scripts and tests for collection, formatting, and selected delivery workflows.
-- **Safer state handling:** atomic writes and run locks in the comprehensive collector.
-
-These controls reduce specific failure modes. They do not guarantee factual accuracy or uninterrupted delivery.
-
-## My contribution
-
-I defined the user needs, agent responsibilities, editorial policies, and delivery experience, then built and iterated on the deployment using Hermes and AI-assisted development.
-
-My work included:
-
-- Designing the specialized workflows and their boundaries.
-- Selecting sources and defining relevance, verification, and notification rules.
-- Configuring agent profiles, schedules, tools, and Telegram interfaces.
-- Developing and adapting collection, validation, and delivery scripts.
-- Troubleshooting authentication, usage limits, duplicate notifications, and workflow failures.
-- Translating operational lessons into clearer checks and recovery behavior.
-
-**Hermes provides the underlying agent framework.** This repository documents my configuration, workflow design, custom components, and deployment work; it does not claim authorship of Hermes or the underlying models.
 
 ## Repository structure
 
@@ -180,12 +122,3 @@ See [EXPORT-NOTES.txt](EXPORT-NOTES.txt) for the current dependency and review n
 
 **Quiet behavior is a product feature.** An unchanged state should not create another notification.
 
-## Next steps
-
-- Make paths and dependencies portable.
-- Reconcile orchestration policies.
-- Run the exported tests and add a reproducible end-to-end example.
-- Publish a sanitized workflow demo.
-- Measure source coverage, duplicate-alert rate, delivery success, latency, and operating cost.
-
-The goal is a system that earns attention through useful, verifiable output—not one that simply produces more messages.
