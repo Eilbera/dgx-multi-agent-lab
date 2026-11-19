@@ -99,26 +99,8 @@ The product-management folder also contains exported report-building code and te
 
 ## Current status
 
-**This repository is a sanitized export of an existing deployment, not yet a turnkey installation.**
+These files come from my own DGX setup. I removed credentials and personal data before sharing them.
 
-- Schedule examples are disabled by default.
-- Credentials, personal identifiers, conversations, memories, resumes, and runtime databases are excluded.
-- Paths, recipients, provider access, and upstream job references require configuration.
-- Some workflows depend on generated artifacts or installed Hermes components not included here.
-- The exported files received syntax and sanitization checks; the full exported system has not yet been validated end to end.
-- The orchestrator contains routing instructions that need reconciliation.
+To use them, you’ll need to configure your own paths, model access, Telegram recipients, and dependencies. Schedule examples are disabled by default. I haven’t tested the exported setup as a fresh installation.
 
-See [EXPORT-NOTES.txt](EXPORT-NOTES.txt) for the current dependency and review notes.
-
-## Lessons from operating the system
-
-**More agents do not automatically produce better results.** Clear responsibilities, useful handoffs, and verification matter more than agent count.
-
-**Collection is not understanding.** Source volume needs editorial selection and evidence checking before it becomes useful intelligence.
-
-**Generation is not delivery.** A report existing on disk does not prove the user received it.
-
-**Errors need actionable explanations.** Authentication failures, exhausted model allowance, failed sources, and delivery failures require different responses.
-
-**Quiet behavior is a product feature.** An unchanged state should not create another notification.
-
+See [EXPORT-NOTES.txt](EXPORT-NOTES.txt) for setup details and known gaps.
