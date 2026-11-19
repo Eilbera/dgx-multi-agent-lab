@@ -11,13 +11,14 @@ Second, I built an additional agent to help with keeping up with the latest prod
 
 ## Why I built it
 
-Most information feeds optimize for volume. I wanted a system that helped me understand:
+First, I know it is a struggle to keep up with AI news. Even people in the field have to be vigilant about looking through multiple forms of media to figure out what is going on. I wanted a system that helped me understand:
 
+- What is going on?
 - What actually changed?
-- Is the claim supported by primary evidence?
 - Why does it matter?
 - Have I already seen this story?
 - Does it warrant an interruption, a daily summary, or deeper reading?
+  
 
 This project explores those questions through a working deployment, with explicit editorial instructions, deterministic collection scripts, persistent state, and automated delivery.
 
